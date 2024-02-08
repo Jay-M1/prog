@@ -26,14 +26,14 @@ class Ball:
             self.position.y = borders.y - self.radius + 1
             self.velocity.y = self.velocity.y * damp * (-1)
             self.velocity.x = self.velocity.x * roll         # Rollwiderstand
-        if self.position.y < 0:
-            self.position.y = -1
+        if self.position.y < self.radius:
+            self.position.y += 1
             self.velocity.y = self.velocity.y * damp * (-1)
-        if self.position.x > borders.x:
-            self.position.x = borders.x + 1
+        if self.position.x > (borders.x - self.radius):
+            self.position.x -= 1
             self.velocity.x = self.velocity.x * damp * (-1)
-        if self.position.x < 0:
-            self.position.x = -1
+        if self.position.x < self.radius:
+            self.position.x += 1
             self.velocity.x = self.velocity.x * damp * (-1)
             
 
@@ -60,11 +60,13 @@ class Ball:
                 self.velocity = other_v_davor * 0.8
 
             if isbigball:
+                sound = pygame.mixer.Sound("sound.wav")
+                pygame.mixer.Sound.play(sound)
                 self.velocity = self.velocity * (-1.1)
                 if self.velocity.abs() >= 2:
                     return True            
 
-    def gravitate(self,DT=1):
+    def gravitate(self,DT=0.7):
 
         self.velocity = self.velocity + self.grav*DT * 0.5
         self.position = self.position + self.velocity*DT + self.grav*DT**2*0.5
@@ -118,7 +120,7 @@ class Ball:
 
             min_rect = min(obj_projections)
             max_rect = max(obj_projections)
-            min_ball = min(ball_projections)
+            min_ball = min(ball_projections)  # 20 ist ball radius
             max_ball = max(ball_projections)
 
             overlap =  min(max_rect, max_ball) - max(min_rect, min_ball)
@@ -137,10 +139,14 @@ class Ball:
         Lets the ball reflect from massive obj
         Input: normal n
         '''
-        boost = other.active * 0.1
+        boost = other.active * 1
         t = n.rotate(-90 * other.right)
         old_velo = self.velocity
         new_velo = n * old_velo.dot(n) * (-1) + t * old_velo.dot(t)
         self.position += new_velo.normalize() * 10
         self.velocity = new_velo * old_velo.abs() * (1+boost)
+
+    def reset(self):
+        self.position = Vector(20, 660)
+        self.velocity = Vector(0,0)
 

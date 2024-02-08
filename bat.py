@@ -4,7 +4,7 @@ from vector import Vector
 from copy import copy
 
 class Bat:
-    def __init__(self, screen, color, points, angle=0, direction=1, count=0, active=1, right=False):
+    def __init__(self, screen, color, points, angle=0, direction=1, count=0, active=1, right=False, anschlag = 50):
 
         '''
         Constructor method for initializing the Bat object.
@@ -32,6 +32,7 @@ class Bat:
         self.direction = direction
         self.count = count
         self.active = active
+        self.anschlag = anschlag
         
         # Determine rotation direction
         if right:
@@ -54,13 +55,13 @@ class Bat:
         '''
 
         # Change rotation direction at specific angles
-        if self.angle == -50 * self.right or self.angle == 20 * self.right:
+        if self.angle == -self.anschlag * self.right or self.angle == 20 * self.right:
             self.direction *= -1
             if self.angle == 20 * self.right:
                 self.count += 1
 
         # Update the rotation angle
-        self.angle -= 2 * self.direction * self.active
+        self.angle -= 1 * self.direction * self.active
 
         # Rotate the corner points of the bat
         rotated_points_vec = []

@@ -18,6 +18,7 @@ class Rect:
         self.position = position  # Die Position des Rechtecks
         self.width = width  # Die Breite des Rechtecks
         self.height = height  # Die Höhe des Rechtecks
+        fps_multiplyer = 1
 
     def calculate_vertices(self):
         """
@@ -68,14 +69,14 @@ class Rect:
         min_overlap = (np.argmin(overlaps), np.min(overlaps))
         return True, normals[min_overlap[0]]
     
-    def push(self, ball, is_aktiv):
-        if is_aktiv and ball.position.x == 16:
-            if self.position.y < 670:
-                return False
-            self.position -= Vector(0, 10)
-            ball.velocity += Vector(0, -10)
-            return False
-        else:
-            self.position = Vector(5,670)
-            return False
+    # def push(self, ball, is_aktiv):
+    #     if is_aktiv and ball.position.x == 16:
+    #         if self.position.y < 670:
+    #             return False
+    #         self.position -= Vector(0, 10)
+    #         ball.velocity += Vector(0, -10)
+    #         return False
+    #     else:
+    #         self.position = Vector(5,670)
+    #         return False
             
